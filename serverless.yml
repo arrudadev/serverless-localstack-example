@@ -1,0 +1,42 @@
+org: arrudadev
+service: serverless-localstack-example
+frameworkVersion: "3.33.0"
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+
+plugins:
+  - serverless-esbuild
+  - serverless-offline
+
+package:
+  individually: true
+  excludeDevDependencies: true
+
+functions:
+  list-buckets:
+    handler: src/functions/list-buckets/handler.handler
+    events:
+      - httpApi:
+          path: /buckets
+          method: get
+  list-bucket-content:
+    handler: src/functions/list-files-in-bucket/handler.handler
+    events:
+      - httpApi:
+          path: /files
+          method: get
+  upload-file:
+    handler: src/functions/upload-file/handler.handler
+    events:
+      - httpApi:
+          path: /upload
+          method: post
+  download-file:
+    handler: src/functions/download-file/handler.handler
+    events:
+      - httpApi:
+          path: /download
+          method: get
